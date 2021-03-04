@@ -1,0 +1,31 @@
+Overview *
+	Demographics, risk factors and causes
+Presentation
+	Patient history and symptoms (includes primary physical)
+Diagnosis
+	Physical **
+	Investigations
+	Differentials
+Management ***
+	Medications
+	Prevention
+	Education
+Follow up
+	Monitoring #
+	Complications
+	Prognosis
+Others
+
+* Overview includes basic description of a disease, transmission (infections) and other miscellaneous.
+
+** Doctors usually know how to examine a patient, information of which is often displayed as part of the presentation. They don't exactly have the time to first ask the questions, check medwise for examination, and then head back to physical. But maybe if they have a potentially questionable presentation, they can check for any additional check-ups or tips on how to examine a patient further in order to maybe catch some trickier signs.
+
+*** This section contains medications (very important to be separate) and prevention (both on individual level and the population, so all the public health issues go inside). Education through experimentation also popped out quite often.
+
+#	1. If the diagnosis of a chronic disease is known (needs constant follow up treatment) then tick both Management/Prevention (maybe also medications if it is for drugs) and also Follow up/Monitoring.
+	2. If the disease is acute and requires no further follow up, just tick Management or any of its subsections.
+	3. If it is not about a specific disease, but of a public health issue (preventing suicide, weight loss on large scale ...), just tick Management/Prevention
+	
+---
+
+Text sections often need more than one heading.
