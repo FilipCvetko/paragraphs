@@ -8,71 +8,70 @@ from tqdm import tqdm
 from nltk.corpus import stopwords
 from scipy.special import softmax
 import numpy as np
-nltk.download("punkt")
-nltk.download("stopwords")
 
-with open("./reports/freqs.json", "r") as file:
-    freqs = json.load(file)
+class FrequencyClassifier():
 
-def compare_against_json(freqs, word):
-    """
-        Return a dictionary with key = heading, value = score(word)
-    """
-    word_score = dict()
-    for heading in unique_master_headings:
-        if word in freqs[heading].keys():
-            word_score[heading] = freqs[heading][word]
-    
-    return word_score
+    # Idea is to build a score. For each word that pops up in the text, add a score to
+    # each of the 5 master headings if a word appears in those headings (their freqs)
+    # At the end apply softmax function to the scores.
+
+    def __init__(self, freqs_dir, test_data_dir):
+        with open(freqs_dir, "r") as file:
+            self.freqs = json.load(file)
+        self.test_data = pd.read_csv(test_data_dir)
+        self.processed = self.test_data.dropna(how="all")
+        self.correct = 0
+        self.accuracy = None
 
 
+    def compare_against_json(self, word):
+        """
+            Return a dictionary with key = heading, value = score(word)
+        """
+        word_score = dict()
+        for heading in unique_master_headings:
+            if word in self.freqs[heading].keys():
+                word_score[heading] = self.freqs[heading][word]
+        
+        return word_score
 
-test_data = pd.read_csv("~/IT/DS/medwise/paragraphs/data/test.csv")
+    def calculate_score(self):
 
-# Idea is to build a score. For each word that pops up in the text, add a score to
-# each of the 5 master headings if a word appears in those headings (their freqs)
-# At the end apply softmax function to the scores.
+        for i in range(len(self.processed)):
+            # Step 1: Get master headings in a list to compare
+            master_headings = get_headings(self.processed.iloc[i]["Heading"],master_only=True)
 
-processed = test_data.dropna(how="all")
+            # Step 2: Tokenize and stem text
+            tokens = nltk.word_tokenize(self.processed.iloc[i]["Text"])
 
-correct = 0
+            # Step 3: Create a dict to count the scores
+            scores = dict()
+            for j in unique_master_headings:
+                scores[j] = 0
 
-for i in range(len(processed)):
-    # print(processed.iloc[i]["Heading"])
+            ps = PorterStemmer()
 
-    # Step 1: Get master headings in a list to compare
-    master_headings = get_headings(processed.iloc[i]["Heading"],master_only=True)
+            for item in tokens:
+                if item not in set(stopwords.words("english")) and item.isalnum():
+                    item = ps.stem(item)
 
-    # Step 2: Tokenize and stem text
-    tokens = nltk.word_tokenize(processed.iloc[i]["Text"])
+                    # Step 4: Compare token against JSON and return scores for each category in dict format
+                    word_score = self.compare_against_json(item)
 
-    # Step 3: Create a dict to count the scores
-    scores = dict()
-    for j in unique_master_headings:
-        scores[j] = 0
+                    # Step 5: Update scores with the word_score
+                    for heading in word_score.keys():
+                        scores[heading] += word_score[heading]
+            
+            # Step 6: Evaluate
+            if max(scores, key=scores.get) in master_headings:
+                self.correct += 1
 
-    ps = PorterStemmer()
+    def print_acc(self):
+        print("-----------------------")
+        print("Final accuracy: ", float(self.correct) / float(len(self.processed)))
+        print("-----------------------")
 
-    for item in tokens:
-        if item not in set(stopwords.words("english")) and item.isalnum():
-            item = ps.stem(item)
-
-            # Step 4: Compare token against JSON and return scores for each category in dict format
-            word_score = compare_against_json(freqs, item)
-
-            # Step 5: Update scores with the word_score
-            for heading in word_score.keys():
-                scores[heading] += word_score[heading]
-
-
-    print("-----------------------")
-    print(processed.iloc[i]["Text"], "\n\n", master_headings, "\n")
-    print("Highest score: ", max(scores, key=scores.get))
-    print("-----------------------")
-    
-    # Step 6: Evaluate
-    if max(scores, key=scores.get) in master_headings:
-        correct += 1
-
-print("Final accuracy: ", float(correct) / float(len(processed)))
+fc = FrequencyClassifier(freqs_dir=freqs_dir, test_data_dir=test_dir)
+fc.calculate_score()
+fc.print_acc()
 
