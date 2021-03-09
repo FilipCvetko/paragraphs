@@ -15,13 +15,26 @@ class FrequencyClassifier():
     # each of the 5 master headings if a word appears in those headings (their freqs)
     # At the end apply softmax function to the scores.
 
-    def __init__(self, freqs_dir, test_data_dir):
-        with open(freqs_dir, "r") as file:
-            self.freqs = json.load(file)
+    def __init__(self, training_data_dir, test_data_dir):
+        self.freqs_dir = None
+        self.test_data_dir = test_data_dir
+        self.training_data_dir = training_data_dir
+        # with open(freqs_dir, "r") as file:
+        #     self.freqs = json.load(file)
         self.test_data = pd.read_csv(test_data_dir)
         self.processed = self.test_data.dropna(how="all")
         self.correct = 0
         self.accuracy = None
+
+    def freqs_from_training(self):
+        data = pd.read_csv(self.training_data_dir)
+
+        freqs = create_dict_from_text(unique_master_headings, data)
+        freqs, counts = count_words_per_heading(freqs)
+        print(counts)
+        write_dict_to_file(freqs, "/reports")
+
+        self.freqs = freqs
 
 
     def compare_against_json(self, word):
@@ -63,7 +76,8 @@ class FrequencyClassifier():
                         scores[heading] += word_score[heading]
             
             # Step 6: Evaluate
-            if max(scores, key=scores.get) in master_headings:
+            prediction = max(scores, key=scores.get)
+            if prediction in master_headings:
                 self.correct += 1
 
     def print_acc(self):
@@ -71,7 +85,8 @@ class FrequencyClassifier():
         print("Final accuracy: ", float(self.correct) / float(len(self.processed)))
         print("-----------------------")
 
-fc = FrequencyClassifier(freqs_dir=freqs_dir, test_data_dir=test_dir)
+fc = FrequencyClassifier(training_data_dir=data_dir, test_data_dir=test_dir)
+fc.freqs_from_training()
 fc.calculate_score()
 fc.print_acc()
 

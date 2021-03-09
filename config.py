@@ -5,4 +5,3 @@ threshold = 5
 
 data_dir = "./data/data.csv"
 test_dir = "./data/test.csv"
-freqs_dir = "./reports/freqs.json"
