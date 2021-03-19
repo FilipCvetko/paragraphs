@@ -93,3 +93,10 @@ def count_words_per_heading(dictionary):
 
 
     return dictionary, heading_counts
+
+def confusion_matrix(targets, outputs, headings):
+    """
+        Takes a list of all targets and outputs (list of lists)
+        and creates a confusion matrix.
+    """
+    # 
