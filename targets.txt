@@ -1,4 +1,5 @@
 Overview *
+	Summary
 	Demographics, risk factors and causes
 Presentation
 	Patient history and symptoms (includes primary physical)
@@ -14,6 +15,7 @@ Follow up
 	Monitoring #
 	Complications
 	Prognosis
+	Refferals (those are also management)
 Others
 
 * Overview includes basic description of a disease, transmission (infections) and other miscellaneous.

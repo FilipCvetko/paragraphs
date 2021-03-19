@@ -14,7 +14,7 @@ from config import *
 class ForestClassifier():
 
     def __init__(self, data_path, test_path):
-        self.data = pd.read_csv(data_path)
+        self.data = pd.read_csv(data_path).dropna(how="all")
         self.headings = self.data["Heading"].tolist()
         self.data = self.data["Text"].tolist()
         self.test = pd.read_csv(test_path).dropna(how="all")
