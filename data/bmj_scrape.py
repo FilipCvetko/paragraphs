@@ -1,11 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import time
 
 INITIAL_URL = "https://bestpractice.bmj.com/specialties"
 ROOT_URL = "https://bestpractice.bmj.com"
 SPECIALTY_URL ="https://bestpractice.bmj.com/specialties/1/Allergy-and-immunology"
 DISEASE_URL = "https://bestpractice.bmj.com/topics/en-gb/596"
+MENU_URL = "https://bestpractice.bmj.com/topics/en-gb/3000117/treatment-algorithm"
 
 def specialties(url):
     """
@@ -48,8 +50,37 @@ def menu_links_from_disease(disease_url):
         try:
             for item in li.ul.children:
                 menus_links.append(ROOT_URL + item.a["href"])
+                print(item.a.text)
         except:
             return menus_links
-    
 
-print(menu_links_from_disease(DISEASE_URL))
+# def preprocess_text(text):
+#     new_text = re.sub(r"^http:", "", text)
+#     new_text = re.sub
+
+def find_content(menu_url):
+    source = requests.get(menu_url).text
+    soup = BeautifulSoup(source, "html.parser")
+
+
+    # Remove all references
+    for span in soup.find_all("span", {"class" : "reference"}):
+        span.decompose()
+
+    # Find "poce contents in class"
+
+    divs = soup.find_all("div")
+    for div in divs:
+        num_of_content = 0
+        for child in div.children:
+            if child.name == 0:
+                break
+            if child.name == "p" or child.name == "ul":
+                num_of_content += 1
+
+        if num_of_content > 3:
+            with open("test.html", "w") as file:
+                file.write(div)
+                break
+
+print(find_content(MENU_URL))
