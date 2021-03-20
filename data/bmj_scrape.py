@@ -8,6 +8,7 @@ ROOT_URL = "https://bestpractice.bmj.com"
 SPECIALTY_URL ="https://bestpractice.bmj.com/specialties/1/Allergy-and-immunology"
 DISEASE_URL = "https://bestpractice.bmj.com/topics/en-gb/596"
 MENU_URL = "https://bestpractice.bmj.com/topics/en-gb/3000117/treatment-algorithm"
+CONTENT_THRESHOLD = 3
 
 def specialties(url):
     """
@@ -54,14 +55,16 @@ def menu_links_from_disease(disease_url):
         except:
             return menus_links
 
-# def preprocess_text(text):
-#     new_text = re.sub(r"^http:", "", text)
-#     new_text = re.sub
+def preprocess_text(text):
+    new_text = re.sub(r"^http:", "", text)
+    new_text = re.sub(r"Practical tip", "", new_text)
+    return new_text
 
 def find_content(menu_url):
     source = requests.get(menu_url).text
     soup = BeautifulSoup(source, "html.parser")
 
+    content = []
 
     # Remove all references
     for span in soup.find_all("span", {"class" : "reference"}):
@@ -78,9 +81,10 @@ def find_content(menu_url):
             if child.name == "p" or child.name == "ul":
                 num_of_content += 1
 
-        if num_of_content > 3:
-            with open("test.html", "w") as file:
-                file.write(div)
-                break
+        if num_of_content > CONTENT_THRESHOLD:
+            corrected_text = preprocess_text(str(div.text))
+            content.append(corrected_text)
 
-print(find_content(MENU_URL))
+    return content
+
+print(find_content(MENU_URL)[0])
