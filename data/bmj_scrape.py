@@ -1,7 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import numpy as np
 import time
+import json
+import os
 
 INITIAL_URL = "https://bestpractice.bmj.com/specialties"
 ROOT_URL = "https://bestpractice.bmj.com"
@@ -9,99 +12,141 @@ SPECIALTY_URL ="https://bestpractice.bmj.com/specialties/1/Allergy-and-immunolog
 DISEASE_URL = "https://bestpractice.bmj.com/topics/en-gb/596"
 MENU_URL = "https://bestpractice.bmj.com/topics/en-gb/3000117/treatment-algorithm"
 MENU_URLL = "https://bestpractice.bmj.com/topics/en-gb/3000117/differentials"
-CONTENT_THRESHOLD = 1
 
-def specialties(url):
-    """
-        Return https url links to all specialtis on bmj
-    """
-    source = requests.get(url).text
-    soup = BeautifulSoup(source, "html.parser")
-    specialties_links = []
+class BMJScraper():
 
-    tag_list = soup.find("ul", attrs={"class":"specialty-list list-unstyled"})
+    def __init__(self, fraction):
+        self.fraction = fraction # What fraction of BMJ do you want to scrape
+        self.ROOT_URL = "https://bestpractice.bmj.com"
+        self.INITIAL_URL = "https://bestpractice.bmj.com/specialties"
+        self.storage_directory = "./scraped_data"
 
-    for li in tag_list.children:
-        try:
-            if li.text == "Assessments" or li.text == "Overviews":
-                return specialties_links
-        except:
-            return specialties_links
-        specialties_links.append(ROOT_URL + li.a["href"])
+    def scrape(self):
+        specialties = self.specialties()
+        diseases = []
+        for specialty in specialties:
+            diseases.append(self.diseases_from_specialty(specialty))
 
-def diseases_from_specialty(specialty_url):
-    source = requests.get(specialty_url).text
-    soup = BeautifulSoup(source, "html.parser")
-    diseases_links = []
+        diseases = np.random.choice(diseases, size=int(self.fraction*len(diseases)))
 
-    tag_list = soup.find_all("a", attrs={"class":"d-flex align-items-center"})
-    for tag in tag_list:
-        diseases_links.append(ROOT_URL + tag["href"])
+        for disease in diseases:
+            menu_links = self.menu_links_from_disease(disease)
+            for menu in menu_links:
+                content, heading = self.find_content(menu)
+                content = self.chunkText(content)
+                self.store_content(content, heading)
 
-    return diseases_links
+    def store_content(self, content, heading):       
+        filename = f"{heading}/"
+        full_foldername = os.path.join(self.storage_directory, filename)
 
-def menu_links_from_disease(disease_url):
-    source = requests.get(disease_url).text
-    soup = BeautifulSoup(source, "html.parser")
-    menus_links = []
-
-    menu = soup.find("ul", attrs={"id" : "menus"})
-    for li in menu.children:
-        if "Resources" in li.text:
-            continue
-        try:
-            for item in li.ul.children:
-                menus_links.append(ROOT_URL + item.a["href"])
-                print(item.a.text)
-        except:
-            return menus_links
-
-def preprocess_text(text):
-    new_text = re.sub(r"^http:", "", text)
-    new_text = re.sub(r"Practical tip", "", new_text)
-    return new_text
-
-def find_content(menu_url):
-    source = requests.get(menu_url).text
-    soup = BeautifulSoup(source, "html.parser")
-
-    content = []
-    chunked_content = []
-
-    # Remove all references
-    for span in soup.find_all("span", {"class" : "reference"}):
-        span.decompose()
-
-    # Find "poce contents in class"
-    soup = soup.find("div", attrs={"class" : re.compile("poce_contents")})
-    print(soup["class"])
-
-    paragraphs = soup.find_all("p")
-    for p in paragraphs:
-        content.append(p.text)
-
-    return content
-
-def chunkText(text, max_tokens=512):
-    """
-        Content comes in list form. A list of all paragraph texts.
-    """
-    chunked_content = []
-    num_tokens = 0
-    new_content = ""
-
-    for i, c in enumerate(text):
-        new_tokens = len(c.split())
-        num_tokens += new_tokens
-        if num_tokens < max_tokens and i == len(text) - 1:
-            chunked_content.append(new_content)
-        elif num_tokens < max_tokens:
-            new_content += (c + " ")
+        if os.path.isdir(full_foldername):
+            with open(full_foldername + f"{hash(content[0])}.json", "w") as file:
+                json.dump(content, file)
         else:
-            chunked_content.append(new_content)
-            num_tokens = 0
-            new_content = ""
+            os.mkdir(full_foldername)
+            with open(full_foldername + f"{hash(content[0])}.json", "w") as file:
+                json.dump(content, file)
 
-    return chunked_content
+    def specialties(self):
+        """
+            Return https url links to all specialtis on bmj
+        """
+        source = requests.get(self.INITIAL_URL).text
+        soup = BeautifulSoup(source, "html.parser")
+        specialties_links = []
 
-print(find_content(MENU_URL))
+        tag_list = soup.find("ul", attrs={"class":"specialty-list list-unstyled"})
+
+        for li in tag_list.children:
+            try:
+                if li.text == "Assessments" or li.text == "Overviews":
+                    return specialties_links
+            except:
+                return specialties_links
+            specialties_links.append(ROOT_URL + li.a["href"])
+
+    def diseases_from_specialty(self, specialty_url):
+        source = requests.get(specialty_url).text
+        soup = BeautifulSoup(source, "html.parser")
+        diseases_links = []
+
+        tag_list = soup.find_all("a", attrs={"class":"d-flex align-items-center"})
+        for tag in tag_list:
+            diseases_links.append(ROOT_URL + tag["href"])
+
+        return diseases_links
+
+    def menu_links_from_disease(self, disease_url):
+        source = requests.get(disease_url).text
+        soup = BeautifulSoup(source, "html.parser")
+        menus_links = []
+
+        menu = soup.find("ul", attrs={"id" : "menus"})
+        for li in menu.children:
+            if "Resources" in li.text:
+                continue
+            try:
+                for item in li.ul.children:
+                    menus_links.append(ROOT_URL + item.a["href"])
+                    print(item.a.text)
+            except:
+                return menus_links
+
+    def preprocess_text(self, text):
+        new_text = re.sub(r"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", "", text)
+        new_text = re.sub(r"Practical tip", "", new_text)
+        return new_text
+
+    def chunkText(self, text, max_tokens=512):
+        """
+            Content comes in list form. A list of all paragraph texts.
+            List in, list out.
+        """
+        chunked_content = []
+        num_tokens = 0
+        new_content = ""
+
+        for i, c in enumerate(text):
+            new_tokens = len(c.split())
+            num_tokens += new_tokens
+            if num_tokens < max_tokens and i == len(text) - 1:
+                chunked_content.append(new_content)
+            elif num_tokens < max_tokens:
+                new_content += (c + " ")
+            else:
+                chunked_content.append(new_content)
+                num_tokens = 0
+                new_content = ""
+
+        return chunked_content
+
+    def find_content(self, menu_url):
+        """
+            Finds all paragraphs in the actual block of text,
+            as denoted by "poce_contents" class of a div tag.
+        """
+        source = requests.get(menu_url).text
+        soup = BeautifulSoup(source, "html.parser")
+
+        heading = soup.main.h2.text
+
+        content = []
+
+        # Remove all references
+        for span in soup.find_all("span", {"class" : "reference"}):
+            span.decompose()
+
+        # Find "poce contents in class" -> all text within is useful
+        soup = soup.find("div", attrs={"class" : re.compile("poce_contents")})
+
+        paragraphs = soup.find_all("p")
+        for p in paragraphs:
+            content.append(p.text)
+
+        self.store_content(self.chunkText(content), heading)
+        return content, heading
+
+
+scraper = BMJScraper(fraction=1)
+scraper.find_content("https://bestpractice.bmj.com/topics/en-gb/3000117/treatment-algorithm")
