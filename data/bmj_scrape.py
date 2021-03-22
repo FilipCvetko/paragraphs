@@ -5,17 +5,19 @@ import numpy as np
 import time
 import json
 import os
+import logging
+import datetime
 
-INITIAL_URL = "https://bestpractice.bmj.com/specialties"
-ROOT_URL = "https://bestpractice.bmj.com"
-SPECIALTY_URL ="https://bestpractice.bmj.com/specialties/1/Allergy-and-immunology"
-DISEASE_URL = "https://bestpractice.bmj.com/topics/en-gb/596"
 MENU_URL = "https://bestpractice.bmj.com/topics/en-gb/3000117/treatment-algorithm"
-MENU_URLL = "https://bestpractice.bmj.com/topics/en-gb/3000117/differentials"
+
+logging.basicConfig(format='%(asctime)s::%(name)s::[%(levelname)s]::%(message)s', 
+                    filename=f"./logs/{datetime.datetime.now()}.log", 
+                    level=logging.INFO)
 
 class BMJScraper():
 
     def __init__(self, fraction):
+        logging.info("Initializing BMJScraper.")
         self.fraction = fraction # What fraction of BMJ do you want to scrape
         self.ROOT_URL = "https://bestpractice.bmj.com"
         self.INITIAL_URL = "https://bestpractice.bmj.com/specialties"
@@ -23,18 +25,26 @@ class BMJScraper():
 
     def scrape(self):
         specialties = self.specialties()
+        logging.info("Specialties loaded successfully.")
         diseases = []
         for specialty in specialties:
             diseases.append(self.diseases_from_specialty(specialty))
+        logging.info("Diseases loaded successfully.")
+
 
         diseases = np.random.choice(diseases, size=int(self.fraction*len(diseases)))
+        logging.info("Diseases separated successfully.")
+
 
         for disease in diseases:
             menu_links = self.menu_links_from_disease(disease)
+            logging.info(f" ----> Menu links for {disease} processed successfully..")
             for menu in menu_links:
                 content, heading = self.find_content(menu)
+                logging.info(f" --------> Content for  {disease}/{heading} loaded successfully.")
                 content = self.chunkText(content)
                 self.store_content(content, heading)
+                logging.info(f" --------> Content for  {disease}/{heading} stored successfully.")
 
     def store_content(self, content, heading):       
         filename = f"{heading}/"
@@ -64,7 +74,7 @@ class BMJScraper():
                     return specialties_links
             except:
                 return specialties_links
-            specialties_links.append(ROOT_URL + li.a["href"])
+            specialties_links.append(self.ROOT_URL + li.a["href"])
 
     def diseases_from_specialty(self, specialty_url):
         source = requests.get(specialty_url).text
@@ -73,7 +83,7 @@ class BMJScraper():
 
         tag_list = soup.find_all("a", attrs={"class":"d-flex align-items-center"})
         for tag in tag_list:
-            diseases_links.append(ROOT_URL + tag["href"])
+            diseases_links.append(self.ROOT_URL + tag["href"])
 
         return diseases_links
 
@@ -149,4 +159,4 @@ class BMJScraper():
 
 
 scraper = BMJScraper(fraction=1)
-scraper.find_content("https://bestpractice.bmj.com/topics/en-gb/3000117/treatment-algorithm")
+scraper.scrape()
