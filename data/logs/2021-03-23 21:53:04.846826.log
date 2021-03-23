@@ -1,0 +1,44 @@
+2021-03-23 21:53:04,847::root::[INFO]::Initializing BMJScraper.
+2021-03-23 21:53:05,103::root::[INFO]::32 specialties loaded successfully.
+2021-03-23 21:53:05,505::root::[INFO]::----> 104 loaded from https://bestpractice.bmj.com/specialties/1/Allergy-and-immunology.
+2021-03-23 21:53:05,909::root::[INFO]::----> 338 loaded from https://bestpractice.bmj.com/specialties/31/Anaesthesiology.
+2021-03-23 21:53:06,375::root::[INFO]::----> 194 loaded from https://bestpractice.bmj.com/specialties/2/Cardiology.
+2021-03-23 21:53:06,779::root::[INFO]::----> 76 loaded from https://bestpractice.bmj.com/specialties/27/Cardiothoracic-surgery.
+2021-03-23 21:53:07,293::root::[INFO]::----> 647 loaded from https://bestpractice.bmj.com/specialties/3/Critical-care-medicine.
+2021-03-23 21:53:07,682::root::[INFO]::----> 256 loaded from https://bestpractice.bmj.com/specialties/4/Dermatology.
+2021-03-23 21:53:08,100::root::[INFO]::----> 185 loaded from https://bestpractice.bmj.com/specialties/23/Ear-nose-and-throat.
+2021-03-23 21:53:08,487::root::[INFO]::----> 684 loaded from https://bestpractice.bmj.com/specialties/5/Emergency-medicine.
+2021-03-23 21:53:08,843::root::[INFO]::----> 252 loaded from https://bestpractice.bmj.com/specialties/6/Endocrinology-and-metabolic-disorders.
+2021-03-23 21:53:09,288::root::[INFO]::----> 349 loaded from https://bestpractice.bmj.com/specialties/7/Gastroenterology-and-hepatology.
+2021-03-23 21:53:09,649::root::[INFO]::----> 207 loaded from https://bestpractice.bmj.com/specialties/24/General-surgery.
+2021-03-23 21:53:09,980::root::[INFO]::----> 138 loaded from https://bestpractice.bmj.com/specialties/8/Genetics.
+2021-03-23 21:53:10,334::root::[INFO]::----> 79 loaded from https://bestpractice.bmj.com/specialties/9/Geriatric-medicine.
+2021-03-23 21:53:10,726::root::[INFO]::----> 149 loaded from https://bestpractice.bmj.com/specialties/11/Haematology.
+2021-03-23 21:53:11,138::root::[INFO]::----> 27 loaded from https://bestpractice.bmj.com/specialties/10/Health-maintenance.
+2021-03-23 21:53:11,549::root::[INFO]::----> 578 loaded from https://bestpractice.bmj.com/specialties/12/Infectious-diseases.
+2021-03-23 21:53:11,924::root::[INFO]::----> 119 loaded from https://bestpractice.bmj.com/specialties/13/Nephrology.
+2021-03-23 21:53:12,325::root::[INFO]::----> 372 loaded from https://bestpractice.bmj.com/specialties/14/Neurology.
+2021-03-23 21:53:12,732::root::[INFO]::----> 165 loaded from https://bestpractice.bmj.com/specialties/25/Neurosurgery.
+2021-03-23 21:53:13,097::root::[INFO]::----> 58 loaded from https://bestpractice.bmj.com/specialties/15/Nutrition.
+2021-03-23 21:53:13,470::root::[INFO]::----> 169 loaded from https://bestpractice.bmj.com/specialties/21/Obstetrics-and-gynaecology.
+2021-03-23 21:53:13,879::root::[INFO]::----> 195 loaded from https://bestpractice.bmj.com/specialties/16/Oncology.
+2021-03-23 21:53:14,208::root::[INFO]::----> 77 loaded from https://bestpractice.bmj.com/specialties/17/Ophthalmology.
+2021-03-23 21:53:14,604::root::[INFO]::----> 167 loaded from https://bestpractice.bmj.com/specialties/26/Orthopaedics.
+2021-03-23 21:53:15,042::root::[INFO]::----> 460 loaded from https://bestpractice.bmj.com/specialties/22/Paediatrics-and-adolescent-medicine.
+2021-03-23 21:53:15,380::root::[INFO]::----> 149 loaded from https://bestpractice.bmj.com/specialties/32/Palliative-care.
+2021-03-23 21:53:15,890::root::[INFO]::----> 1232 loaded from https://bestpractice.bmj.com/specialties/30/Primary-care.
+2021-03-23 21:53:16,445::root::[INFO]::----> 144 loaded from https://bestpractice.bmj.com/specialties/18/Psychiatry.
+2021-03-23 21:53:16,796::root::[INFO]::----> 274 loaded from https://bestpractice.bmj.com/specialties/19/Respiratory-disorders.
+2021-03-23 21:53:17,177::root::[INFO]::----> 185 loaded from https://bestpractice.bmj.com/specialties/20/Rheumatology.
+2021-03-23 21:53:17,509::root::[INFO]::----> 146 loaded from https://bestpractice.bmj.com/specialties/28/Urology.
+2021-03-23 21:53:17,896::root::[INFO]::----> 53 loaded from https://bestpractice.bmj.com/specialties/29/Vascular-surgery.
+2021-03-23 21:53:17,896::root::[INFO]::8228 diseases loaded successfully.
+2021-03-23 21:53:17,896::root::[INFO]::Diseases separated successfully.
+2021-03-23 21:53:18,467::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/141 processed successfully..
+2021-03-23 21:53:18,923::root::[ERROR]::
+Traceback (most recent call last):
+  File "bmj_scrape.py", line 37, in wrapper_function
+    return original_function(*args, **kwargs)
+  File "bmj_scrape.py", line 182, in find_content
+    paragraphs = soup.find_all("p")
+AttributeError: 'NoneType' object has no attribute 'find_all'

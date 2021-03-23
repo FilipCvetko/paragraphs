@@ -7,45 +7,66 @@ import json
 import os
 import logging
 import datetime
+from functools import wraps
+from random import sample
 
 MENU_URL = "https://bestpractice.bmj.com/topics/en-gb/3000117/treatment-algorithm"
 
-logging.basicConfig(format='%(asctime)s::%(name)s::[%(levelname)s]::%(message)s', 
-                    filename=f"./logs/{datetime.datetime.now()}.log", 
-                    level=logging.INFO)
+# logging.basicConfig(format='%(asctime)s::%(name)s::[%(levelname)s]::%(message)s', 
+#                     filename=f"./logs/{datetime.datetime.now()}.log", 
+#                     level=logging.INFO)
 
 class BMJScraper():
 
-    def __init__(self, fraction):
+    def __init__(self, num_diseases):
         logging.info("Initializing BMJScraper.")
-        self.fraction = fraction # What fraction of BMJ do you want to scrape
+        self.num_diseases = num_diseases # What fraction of BMJ do you want to scrape
         self.ROOT_URL = "https://bestpractice.bmj.com"
         self.INITIAL_URL = "https://bestpractice.bmj.com/specialties"
         self.storage_directory = "./scraped_data"
 
+    def log_errors(original_function):
+        """
+            This function is a wrapper function for all scraper functions
+            It works by trying to execute the function and if it fails, it logs the
+            error thrown to the function to the log file.
+        """
+        @wraps(original_function)
+        def wrapper_function(*args, **kwargs):
+            try:
+                return original_function(*args, **kwargs)
+            except:
+                logging.exception('')
+        return wrapper_function
+
     def scrape(self):
         specialties = self.specialties()
-        logging.info("Specialties loaded successfully.")
+        logging.info(f"{len(specialties)} specialties loaded successfully.")
         diseases = []
+
         for specialty in specialties:
-            diseases.append(self.diseases_from_specialty(specialty))
-        logging.info("Diseases loaded successfully.")
+            new_diseases = self.diseases_from_specialty(specialty)
+            logging.info(f"----> {len(new_diseases)} loaded from {specialty}.")
+            for d in new_diseases:
+                diseases.append(d)
 
+        logging.info(f"{len(diseases)} diseases loaded successfully.")
 
-        diseases = np.random.choice(diseases, size=int(self.fraction*len(diseases)))
+        diseases = sample(diseases, self.num_diseases)
         logging.info("Diseases separated successfully.")
-
 
         for disease in diseases:
             menu_links = self.menu_links_from_disease(disease)
             logging.info(f" ----> Menu links for {disease} processed successfully..")
             for menu in menu_links:
+                print(menu)
                 content, heading = self.find_content(menu)
                 logging.info(f" --------> Content for  {disease}/{heading} loaded successfully.")
                 content = self.chunkText(content)
                 self.store_content(content, heading)
                 logging.info(f" --------> Content for  {disease}/{heading} stored successfully.")
 
+    @log_errors
     def store_content(self, content, heading):       
         filename = f"{heading}/"
         full_foldername = os.path.join(self.storage_directory, filename)
@@ -58,6 +79,9 @@ class BMJScraper():
             with open(full_foldername + f"{hash(content[0])}.json", "w") as file:
                 json.dump(content, file)
 
+        logging.info("Succesfully")
+
+    @log_errors
     def specialties(self):
         """
             Return https url links to all specialtis on bmj
@@ -76,6 +100,7 @@ class BMJScraper():
                 return specialties_links
             specialties_links.append(self.ROOT_URL + li.a["href"])
 
+    @log_errors 
     def diseases_from_specialty(self, specialty_url):
         source = requests.get(specialty_url).text
         soup = BeautifulSoup(source, "html.parser")
@@ -87,27 +112,31 @@ class BMJScraper():
 
         return diseases_links
 
+    @log_errors
     def menu_links_from_disease(self, disease_url):
         source = requests.get(disease_url).text
         soup = BeautifulSoup(source, "html.parser")
         menus_links = []
 
         menu = soup.find("ul", attrs={"id" : "menus"})
-        for li in menu.children:
+        for submenu in menu.children:
             if "Resources" in li.text:
                 continue
             try:
                 for item in li.ul.children:
-                    menus_links.append(ROOT_URL + item.a["href"])
+                    print(item.a["href"])
+                    menus_links.append(self.ROOT_URL + item.a["href"])
                     print(item.a.text)
             except:
                 return menus_links
 
+    @log_errors
     def preprocess_text(self, text):
         new_text = re.sub(r"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", "", text)
         new_text = re.sub(r"Practical tip", "", new_text)
         return new_text
 
+    @log_errors
     def chunkText(self, text, max_tokens=512):
         """
             Content comes in list form. A list of all paragraph texts.
@@ -131,6 +160,7 @@ class BMJScraper():
 
         return chunked_content
 
+    @log_errors
     def find_content(self, menu_url):
         """
             Finds all paragraphs in the actual block of text,
@@ -158,5 +188,5 @@ class BMJScraper():
         return content, heading
 
 
-scraper = BMJScraper(fraction=1)
+scraper = BMJScraper(num_diseases=100)
 scraper.scrape()

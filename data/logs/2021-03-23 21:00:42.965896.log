@@ -1,0 +1,136 @@
+2021-03-23 21:00:42,966::root::[INFO]::Initializing BMJScraper.
+2021-03-23 21:00:43,391::root::[INFO]::32 specialties loaded successfully.
+2021-03-23 21:00:43,866::root::[INFO]::----104 loaded from https://bestpractice.bmj.com/specialties/1/Allergy-and-immunology.
+2021-03-23 21:00:44,333::root::[INFO]::----338 loaded from https://bestpractice.bmj.com/specialties/31/Anaesthesiology.
+2021-03-23 21:00:44,724::root::[INFO]::----194 loaded from https://bestpractice.bmj.com/specialties/2/Cardiology.
+2021-03-23 21:00:45,131::root::[INFO]::----76 loaded from https://bestpractice.bmj.com/specialties/27/Cardiothoracic-surgery.
+2021-03-23 21:00:45,602::root::[INFO]::----647 loaded from https://bestpractice.bmj.com/specialties/3/Critical-care-medicine.
+2021-03-23 21:00:46,015::root::[INFO]::----256 loaded from https://bestpractice.bmj.com/specialties/4/Dermatology.
+2021-03-23 21:00:46,393::root::[INFO]::----185 loaded from https://bestpractice.bmj.com/specialties/23/Ear-nose-and-throat.
+2021-03-23 21:00:46,763::root::[INFO]::----684 loaded from https://bestpractice.bmj.com/specialties/5/Emergency-medicine.
+2021-03-23 21:00:47,193::root::[INFO]::----252 loaded from https://bestpractice.bmj.com/specialties/6/Endocrinology-and-metabolic-disorders.
+2021-03-23 21:00:47,564::root::[INFO]::----349 loaded from https://bestpractice.bmj.com/specialties/7/Gastroenterology-and-hepatology.
+2021-03-23 21:00:47,917::root::[INFO]::----207 loaded from https://bestpractice.bmj.com/specialties/24/General-surgery.
+2021-03-23 21:00:48,334::root::[INFO]::----138 loaded from https://bestpractice.bmj.com/specialties/8/Genetics.
+2021-03-23 21:00:48,751::root::[INFO]::----79 loaded from https://bestpractice.bmj.com/specialties/9/Geriatric-medicine.
+2021-03-23 21:00:49,149::root::[INFO]::----149 loaded from https://bestpractice.bmj.com/specialties/11/Haematology.
+2021-03-23 21:00:49,552::root::[INFO]::----27 loaded from https://bestpractice.bmj.com/specialties/10/Health-maintenance.
+2021-03-23 21:00:49,969::root::[INFO]::----578 loaded from https://bestpractice.bmj.com/specialties/12/Infectious-diseases.
+2021-03-23 21:00:50,371::root::[INFO]::----119 loaded from https://bestpractice.bmj.com/specialties/13/Nephrology.
+2021-03-23 21:00:50,714::root::[INFO]::----372 loaded from https://bestpractice.bmj.com/specialties/14/Neurology.
+2021-03-23 21:00:51,100::root::[INFO]::----165 loaded from https://bestpractice.bmj.com/specialties/25/Neurosurgery.
+2021-03-23 21:00:51,547::root::[INFO]::----58 loaded from https://bestpractice.bmj.com/specialties/15/Nutrition.
+2021-03-23 21:00:51,947::root::[INFO]::----169 loaded from https://bestpractice.bmj.com/specialties/21/Obstetrics-and-gynaecology.
+2021-03-23 21:00:52,290::root::[INFO]::----195 loaded from https://bestpractice.bmj.com/specialties/16/Oncology.
+2021-03-23 21:00:52,686::root::[INFO]::----77 loaded from https://bestpractice.bmj.com/specialties/17/Ophthalmology.
+2021-03-23 21:00:53,025::root::[INFO]::----167 loaded from https://bestpractice.bmj.com/specialties/26/Orthopaedics.
+2021-03-23 21:00:53,387::root::[INFO]::----460 loaded from https://bestpractice.bmj.com/specialties/22/Paediatrics-and-adolescent-medicine.
+2021-03-23 21:00:53,738::root::[INFO]::----149 loaded from https://bestpractice.bmj.com/specialties/32/Palliative-care.
+2021-03-23 21:00:54,294::root::[INFO]::----1232 loaded from https://bestpractice.bmj.com/specialties/30/Primary-care.
+2021-03-23 21:00:54,629::root::[INFO]::----144 loaded from https://bestpractice.bmj.com/specialties/18/Psychiatry.
+2021-03-23 21:00:54,967::root::[INFO]::----274 loaded from https://bestpractice.bmj.com/specialties/19/Respiratory-disorders.
+2021-03-23 21:00:55,340::root::[INFO]::----185 loaded from https://bestpractice.bmj.com/specialties/20/Rheumatology.
+2021-03-23 21:00:55,807::root::[INFO]::----146 loaded from https://bestpractice.bmj.com/specialties/28/Urology.
+2021-03-23 21:00:56,118::root::[INFO]::----53 loaded from https://bestpractice.bmj.com/specialties/29/Vascular-surgery.
+2021-03-23 21:00:56,118::root::[INFO]::8228 diseases loaded successfully.
+2021-03-23 21:00:56,118::root::[INFO]::Diseases separated successfully.
+2021-03-23 21:00:56,678::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/571 processed successfully..
+2021-03-23 21:00:57,448::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/775 processed successfully..
+2021-03-23 21:00:57,872::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/324 processed successfully..
+2021-03-23 21:00:58,228::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/804 processed successfully..
+2021-03-23 21:00:58,577::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/118 processed successfully..
+2021-03-23 21:00:58,939::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/238 processed successfully..
+2021-03-23 21:00:59,356::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/267 processed successfully..
+2021-03-23 21:00:59,800::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1169 processed successfully..
+2021-03-23 21:01:00,204::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/835 processed successfully..
+2021-03-23 21:01:00,683::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/369 processed successfully..
+2021-03-23 21:01:01,058::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1017 processed successfully..
+2021-03-23 21:01:01,656::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/3000092 processed successfully..
+2021-03-23 21:01:02,359::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/3000170 processed successfully..
+2021-03-23 21:01:02,716::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/731 processed successfully..
+2021-03-23 21:01:03,057::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/995 processed successfully..
+2021-03-23 21:01:03,555::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/265 processed successfully..
+2021-03-23 21:01:03,990::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/627 processed successfully..
+2021-03-23 21:01:04,399::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/897 processed successfully..
+2021-03-23 21:01:04,819::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/53 processed successfully..
+2021-03-23 21:01:05,155::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/867 processed successfully..
+2021-03-23 21:01:05,743::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/720 processed successfully..
+2021-03-23 21:01:06,150::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/713 processed successfully..
+2021-03-23 21:01:06,523::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/215 processed successfully..
+2021-03-23 21:01:06,872::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/226 processed successfully..
+2021-03-23 21:01:07,253::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1023 processed successfully..
+2021-03-23 21:01:07,598::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/768 processed successfully..
+2021-03-23 21:01:08,059::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/753 processed successfully..
+2021-03-23 21:01:08,450::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/820 processed successfully..
+2021-03-23 21:01:08,818::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1066 processed successfully..
+2021-03-23 21:01:09,204::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/409 processed successfully..
+2021-03-23 21:01:09,554::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/774 processed successfully..
+2021-03-23 21:01:09,942::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/208 processed successfully..
+2021-03-23 21:01:10,318::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/604 processed successfully..
+2021-03-23 21:01:10,708::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1072 processed successfully..
+2021-03-23 21:01:11,037::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/119 processed successfully..
+2021-03-23 21:01:11,787::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/501 processed successfully..
+2021-03-23 21:01:12,212::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/3000205 processed successfully..
+2021-03-23 21:01:12,548::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/344 processed successfully..
+2021-03-23 21:01:13,032::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/954 processed successfully..
+2021-03-23 21:01:13,429::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/84 processed successfully..
+2021-03-23 21:01:13,808::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/780 processed successfully..
+2021-03-23 21:01:14,151::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/90 processed successfully..
+2021-03-23 21:01:14,515::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/182 processed successfully..
+2021-03-23 21:01:14,931::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/3000149 processed successfully..
+2021-03-23 21:01:15,508::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/3000178 processed successfully..
+2021-03-23 21:01:16,114::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/345 processed successfully..
+2021-03-23 21:01:16,501::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/161 processed successfully..
+2021-03-23 21:01:17,026::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/3000124 processed successfully..
+2021-03-23 21:01:17,422::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/862 processed successfully..
+2021-03-23 21:01:17,784::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/418 processed successfully..
+2021-03-23 21:01:18,357::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/3000095 processed successfully..
+2021-03-23 21:01:18,760::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/583 processed successfully..
+2021-03-23 21:01:19,129::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1050 processed successfully..
+2021-03-23 21:01:19,495::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/275 processed successfully..
+2021-03-23 21:01:19,858::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/868 processed successfully..
+2021-03-23 21:01:20,313::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/401 processed successfully..
+2021-03-23 21:01:20,678::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1124 processed successfully..
+2021-03-23 21:01:21,176::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/3000096 processed successfully..
+2021-03-23 21:01:21,531::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1105 processed successfully..
+2021-03-23 21:01:21,942::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/3000128 processed successfully..
+2021-03-23 21:01:22,286::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/340 processed successfully..
+2021-03-23 21:01:22,630::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/412 processed successfully..
+2021-03-23 21:01:23,071::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/171 processed successfully..
+2021-03-23 21:01:23,471::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1082 processed successfully..
+2021-03-23 21:01:23,839::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/61 processed successfully..
+2021-03-23 21:01:24,167::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1135 processed successfully..
+2021-03-23 21:01:24,524::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/538 processed successfully..
+2021-03-23 21:01:24,956::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1098 processed successfully..
+2021-03-23 21:01:25,383::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/456 processed successfully..
+2021-03-23 21:01:25,811::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/940 processed successfully..
+2021-03-23 21:01:26,158::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/939 processed successfully..
+2021-03-23 21:01:26,494::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/861 processed successfully..
+2021-03-23 21:01:26,877::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/934 processed successfully..
+2021-03-23 21:01:27,326::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/3000101 processed successfully..
+2021-03-23 21:01:27,702::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1070 processed successfully..
+2021-03-23 21:01:28,048::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/601 processed successfully..
+2021-03-23 21:01:28,441::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/570 processed successfully..
+2021-03-23 21:01:28,947::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/179 processed successfully..
+2021-03-23 21:01:29,308::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/663 processed successfully..
+2021-03-23 21:01:29,641::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1174 processed successfully..
+2021-03-23 21:01:30,012::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/271 processed successfully..
+2021-03-23 21:01:30,380::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/653 processed successfully..
+2021-03-23 21:01:30,864::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/853 processed successfully..
+2021-03-23 21:01:31,242::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/597 processed successfully..
+2021-03-23 21:01:31,783::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/967 processed successfully..
+2021-03-23 21:01:32,178::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/277 processed successfully..
+2021-03-23 21:01:32,512::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/165 processed successfully..
+2021-03-23 21:01:32,852::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/283 processed successfully..
+2021-03-23 21:01:33,361::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/993 processed successfully..
+2021-03-23 21:01:33,693::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/462 processed successfully..
+2021-03-23 21:01:34,183::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/3000119 processed successfully..
+2021-03-23 21:01:34,516::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/619 processed successfully..
+2021-03-23 21:01:34,915::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/7 processed successfully..
+2021-03-23 21:01:35,264::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/759 processed successfully..
+2021-03-23 21:01:35,596::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/965 processed successfully..
+2021-03-23 21:01:35,946::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/628 processed successfully..
+2021-03-23 21:01:36,411::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1085 processed successfully..
+2021-03-23 21:01:36,748::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/666 processed successfully..
+2021-03-23 21:01:37,108::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/1057 processed successfully..
+2021-03-23 21:01:37,434::root::[INFO]:: ----> Menu links for https://bestpractice.bmj.com/topics/en-gb/209 processed successfully..
