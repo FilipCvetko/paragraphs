@@ -1,3 +1,6 @@
+# This function extracts meaningful data from HTML files and chunks them
+# in appropriate ways to obtain data for evaluation or training.
+
 # @log_errors
     # def store_content(self, content, heading):       
     #     filename = f"{heading}/"

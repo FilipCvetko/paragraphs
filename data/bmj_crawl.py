@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-import numpy as np
-import time
 import json
 import os
 import logging
@@ -10,7 +8,7 @@ import datetime
 from functools import wraps
 from random import sample
 
-DISEASE_URL = "https://bestpractice.bmj.com/topics/en-gb/36"
+# Crawls through all of BMJ best practises and extracts all menu_links with data.
 
 class BMJCrawler():
 
@@ -136,5 +134,5 @@ class BMJCrawler():
 
         return menus_links
 
-scraper = BMJCrawler(fraction_flag=True, num_diseases=10)
+scraper = BMJCrawler(fraction_flag=False, num_diseases=10)
 scraper.scrape()
