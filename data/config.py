@@ -1,0 +1,6 @@
+MENU_LINKS_FILE = "./menu_links.json"
+DISEASE_LINKS_FILE = "./disease_links.json"
+ROOT_URL = "https://bestpractice.bmj.com"
+INITIAL_URL = "https://bestpractice.bmj.com/specialties"
+STORAGE_DIRECTORY = "./saved_pages/"
+LOG_DIRECTORY = "./logs"

@@ -7,22 +7,21 @@ import logging
 import datetime
 from functools import wraps
 from random import sample
-
+from config import *
 # Crawls through all of BMJ best practises and extracts all menu_links with data.
 
 class BMJCrawler():
 
     def __init__(self, fraction_flag, num_diseases):
         logging.basicConfig(format='%(asctime)s::%(name)s::[%(levelname)s]::%(message)s', 
-                    filename=f"./logs/{datetime.datetime.now()}.log", 
+                    filename=f"{LOG_DIRECTORY}/crawler_{datetime.datetime.now()}.log", 
                     level=logging.INFO)
         logging.info("Initializing BMJScraper.")
         self.num_diseases = num_diseases # What fraction of BMJ do you want to scrape
-        self.ROOT_URL = "https://bestpractice.bmj.com"
-        self.INITIAL_URL = "https://bestpractice.bmj.com/specialties"
-        self.storage_directory = "./scraped_data"
-        self.disease_links_filename = "./disease_links.json"
-        self.menu_links_filename = "./menu_links.json"
+        self.ROOT_URL = ROOT_URL
+        self.INITIAL_URL = INITIAL_URL
+        self.disease_links_filename = DISEASE_LINKS_FILE
+        self.menu_links_filename = MENU_LINKS_FILE
         self.fraction_flag = fraction_flag
 
     def log_errors(original_function):
@@ -52,6 +51,9 @@ class BMJCrawler():
                     logging.info(f"----> {len(new_diseases)} loaded from {specialty}.")
                     for d in new_diseases:
                         diseases.append(d)
+
+                diseases = set(diseases)
+                diseases = list(diseases)
 
                 logging.info(f"{len(diseases)} diseases loaded successfully.")
                 json.dump(diseases, file)
@@ -134,5 +136,5 @@ class BMJCrawler():
 
         return menus_links
 
-scraper = BMJCrawler(fraction_flag=False, num_diseases=10)
+scraper = BMJCrawler(fraction_flag=True, num_diseases=10)
 scraper.scrape()
