@@ -23,6 +23,7 @@ class BMJCrawler():
         self.disease_links_filename = DISEASE_LINKS_FILE
         self.menu_links_filename = MENU_LINKS_FILE
         self.fraction_flag = fraction_flag
+        self.time_interval = 1
 
     def log_errors(original_function):
         """
@@ -70,6 +71,7 @@ class BMJCrawler():
         if not os.path.isfile(self.menu_links_filename):
             all_menu_links = []
             for disease in diseases:
+                #time.sleep(self.time_interval)
                 menu_links = self.menu_links_from_disease(disease)
                 for link in menu_links:
                     all_menu_links.append(link)
@@ -136,5 +138,5 @@ class BMJCrawler():
 
         return menus_links
 
-scraper = BMJCrawler(fraction_flag=True, num_diseases=10)
+scraper = BMJCrawler(fraction_flag=False, num_diseases=10)
 scraper.scrape()
