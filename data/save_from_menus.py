@@ -7,12 +7,17 @@ import sys
 import os
 import logging
 import datetime
+import time
 import requests
 from bs4 import BeautifulSoup
 from config import *
 from credentials import *
 from requests.auth import HTTPBasicAuth
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import scrapy
 driver = webdriver.Chrome()
 
 class HTMLSaver():
@@ -28,6 +33,9 @@ class HTMLSaver():
         self.disease_links = None
         self.username = BMJ_USERNAME
         self.password = BMJ_PASSWORD
+        self.login_page = LOGIN_PAGE
+        self.visited_filename = VISITED_FILENAME
+        self.visited = None
         try:
             with open(self.menu_links_file, "r") as file:
                 self.menu_links = json.load(file)
@@ -44,34 +52,69 @@ class HTMLSaver():
         except FileNotFoundError:
             print("Menu links file not found. Run bmj_crawl.py first.")
             sys.exit(0)
+        if not os.path.isfile(self.visited_filename):
+            self.visited = self.create_dict_from_menus()
+            with open(self.visited_filename, "w") as file:
+                json.dump(self.visited, file)
+                logging.info("Created visited.json file")
+        else:
+            with open(self.visited_filename, "r") as file:
+                self.visited = json.load(file)
+                logging.info("Successfully read visited.json file.")
         logging.info("Successfully initialized HTMLSaver.")
+        logging.info(f"{self.check_num_visited()} already visited and saved out of {len(self.visited)}")
 
-    def save_page(self, url):
-        try:
-            # source = requests.get(url, auth=HTTPBasicAuth(self.username, self.password)).text
-            # soup = BeautifulSoup(source, "html.parser").prettify()
-            driver.get(url)
-            driver.find_element_by_id("lfInputEmail").send_keys(BMJ_USERNAME)
-            driver.find_element_by_id ("lfInputPass").send_keys(BMJ_PASSWORD)
-            driver.find_element_by_xpath('//button[text()="Accept Cookies"]').click()
-            driver.find_element_by_id("loginSubmit").click()
-            soup = driver.page_source
-        except Exception as e:
-            logging.exception('')
+    def check_num_visited(self):
+        total = 0
+        for key, value in self.visited.items():
+            if value == True:
+                total += 1
+        return total
 
-        # Save pretty soup object to a file with its content hashed.
-        filename = str(hash(soup)) + ".html"
+    def create_dict_from_menus(self):
+        visited = dict()
+        for link in self.menu_links:
+            visited[link] = False
+        return visited
+
+    def save_page(self, html):
+        filename = str(hash(datetime.datetime.now())) + ".html"
         with open(self.storage_directory + filename, "w") as file:
-            json.dump(soup, file)
+            file.write(html)
 
-        logging.info(f"Successfully saved menu_link page: {url}")
+    def save_json(self):
+        with open(self.visited_filename, "w") as file:
+            json.dump(self.visited, file)
 
     def save_all_menu_links(self):
-        for link in self.menu_links:
-            self.save_page(link)
-        for disease_link in self.disease_links:
-            self.save_page(disease_link)
+        driver.get(self.login_page)
+        driver.find_element_by_xpath('//button[text()="Accept Cookies"]').click()
+        driver.find_element_by_id("lfInputEmail").send_keys(BMJ_USERNAME)
+        driver.find_element_by_id ("lfInputPass").send_keys(BMJ_PASSWORD)
+        driver.find_element_by_id("loginSubmit").click()
 
-test = "https://bestpractice.bmj.com/topics/en-us/236/treatment-algorithm"
+        for link in self.menu_links:
+            base_link = link.rsplit("/", 1)[-2]
+            if base_link not in self.visited:
+                self.visited[base_link] = False
+            if self.visited[base_link] == True and self.visited[link] == True:
+                continue
+            driver.get(base_link)
+            if self.visited[base_link] == False:
+                time.sleep(4)
+                self.save_page(driver.execute_script("return document.documentElement.outerHTML"))
+                logging.info(f"----> Successfully saved page {base_link}")
+                self.visited[base_link] = True
+                self.save_json()
+            if self.visited[link] == False:
+                driver.get(link)
+                time.sleep(4)
+                self.save_page(driver.execute_script("return document.documentElement.outerHTML"))
+                logging.info(f"----> Successfully saved page {link}")
+                self.visited[link] = True
+                self.save_json()
+            
+           
+
 saver = HTMLSaver()
-saver.save_page(test)
+saver.save_all_menu_links()
