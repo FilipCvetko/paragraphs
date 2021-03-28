@@ -2,3 +2,6 @@
 *.pth.tar
 *.json
 *.log
+*credentials.py
+*html
+*htm
