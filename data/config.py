@@ -1,8 +1,0 @@
-MENU_LINKS_FILE = "./menu_links.json"
-DISEASE_LINKS_FILE = "./disease_links.json"
-ROOT_URL = "https://bestpractice.bmj.com"
-INITIAL_URL = "https://bestpractice.bmj.com/specialties"
-STORAGE_DIRECTORY = "/media/filip/8C109467109459D2/medwise/saved_pages/"
-LOG_DIRECTORY = "./logs"
-VISITED_FILENAME = "./visited.json"
-LOGIN_PAGE = "https://bestpractice.bmj.com/login"
