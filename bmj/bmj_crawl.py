@@ -53,8 +53,10 @@ class BMJCrawler():
                     for d in new_diseases:
                         diseases.append(d)
 
+                print(diseases[:15])
                 diseases = set(diseases)
                 diseases = list(diseases)
+                print(diseases[:15])
 
                 logging.info(f"{len(diseases)} diseases loaded successfully.")
                 json.dump(diseases, file)

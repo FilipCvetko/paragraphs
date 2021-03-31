@@ -75,10 +75,9 @@ class BERTClass6(torch.nn.Module):
 
 class CustomDataset(Dataset):
 
-    def __init__(self, dataframe, tokenizer, max_len):
+    def __init__(self, text, tokenizer, max_len):
         self.tokenizer = tokenizer
-        self.data = dataframe
-        self.text = dataframe.text
+        self.text = text
         self.max_len = max_len
 
     def __len__(self):
@@ -139,7 +138,7 @@ model_one = model_one.to(device)
 def evaluate():
     for ind, row in data.iterrows():
         row.reset_index(drop=True)
-        eval_set = CustomDataset(row, tokenizer, MAX_LEN)
+        eval_set = CustomDataset(row["text"], tokenizer, MAX_LEN)
 
         eval_loader = DataLoader(eval_set, **eval_params)
 
