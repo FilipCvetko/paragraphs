@@ -12,6 +12,7 @@ import torch
 import time
 from torch.utils.data import Dataset, DataLoader, RandomSampler, SequentialSampler
 from transformers import BertTokenizer, BertModel, BertConfig
+from tqdm import tqdm
 
 # Preparing for TPU usage
 # import torch_xla
@@ -84,11 +85,8 @@ class CustomDataset(Dataset):
         return len(self.text)
 
     def __getitem__(self, index):
-        text = str(self.text[index])
-        text = " ".join(text.split())
-
         inputs = self.tokenizer.encode_plus(
-            text,
+            self.text,
             None,
             add_special_tokens=True,
             max_length=self.max_len,
@@ -116,7 +114,8 @@ eval_params = {'batch_size': 1,
                 'num_workers': 0
                 }
 
-data["predicted"] = np.nan
+new_data_list = list()
+
 
 device = torch.device('cpu')
 
@@ -125,18 +124,21 @@ model_one.load_state_dict(torch.load("./../models/BERTforSeqClassification.pth.t
 model_one.eval()
 model_one = model_one.to(device)
 
-# model_two = BERTClass7()
-# model_two.load_state_dict(torch.load("./../models/medications_separate.pth.tar", map_location=device))
-# model_two.eval()
-# model_two = model_two.to(device)
+model_two = BERTClass7()
+model_two.load_state_dict(torch.load("./../models/medications_separate.pth.tar", map_location=device))
+model_two.eval()
+model_two = model_two.to(device)
 
-# model_three = BERTClass7()
-# model_three.load_state_dict(torch.load("./../models/referrals_added.pth.tar", map_location=device))
-# model_three.eval()
-# model_three = model_three.to(device)
+model_three = BERTClass7()
+model_three.load_state_dict(torch.load("./../models/referrals_added.pth.tar", map_location=device))
+model_three.eval()
+model_three = model_three.to(device)
 
 def evaluate():
-    for ind, row in data.iterrows():
+
+    for ind, row in tqdm(data.iterrows()):
+        if ind == 30:
+            break
         row.reset_index(drop=True)
         eval_set = CustomDataset(row["text"], tokenizer, MAX_LEN)
 
@@ -150,27 +152,23 @@ def evaluate():
 
 
             outputs_one = model_one(ids, mask, token_type_ids)
-            print(ids[:10])
-            # outputs_two = model_two(ids, mask, token_type_ids)
-            # outputs_three = model_three(ids, mask, token_type_ids)
+            outputs_two = model_two(ids, mask, token_type_ids)
+            outputs_three = model_three(ids, mask, token_type_ids)
             outputs_one = torch.sigmoid(outputs_one).cpu().detach().numpy().tolist()
-            # outputs_two = torch.sigmoid(outputs_two).cpu().detach().numpy().tolist()
-            # outputs_three = torch.sigmoid(outputs_three).cpu().detach().numpy().tolist()
+            outputs_two = torch.sigmoid(outputs_two).cpu().detach().numpy().tolist()
+            outputs_three = torch.sigmoid(outputs_three).cpu().detach().numpy().tolist()
 
             outputs_one = np.array(outputs_one) >= 0.5
-            print(outputs_one)
-            # outputs_two = np.array(outputs_two) >= 0.5
-            # outputs_three = np.array(outputs_three) >= 0.5
+            outputs_two = np.array(outputs_two) >= 0.5
+            outputs_three = np.array(outputs_three) >= 0.5
 
-            data.loc[ind, "predicted"] = str(outputs_one)
-            # data.loc[ind, "two"] = str(outputs_two)
-            # data.loc[ind, "three"] = str(outputs_three)
-            print("before break")
+            new_data_list.append({"title" : row["title"], "text" : row["text"], "1" : outputs_one, "2" : outputs_two, "3" : outputs_three})
             break
 
-        print("Text: ", row["text"])
-        print(data.loc[ind, "predicted"])
+        # print("Text: ", row["text"])
+        # print(data.loc[ind, "predicted"])
 
 evaluate()
 
-data.to_csv("./predicted1.csv")
+to_export = pd.DataFrame(new_data_list)
+to_export.to_csv("./../data/predicted2.csv")

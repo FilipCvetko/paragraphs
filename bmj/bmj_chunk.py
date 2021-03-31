@@ -1,9 +1,42 @@
 from bs4 import BeautifulSoup
+from config import *
+import os
+import time
 
+class BMJChunker():
 
+    def __init__(self):
+        self.pages_directory = PAGES_DIRECTORY
+        self.chunks_directory = CHUNKS_DIRECTORY
+        self.filenames = []
 
+    def return_page_filenames(self):
+        for root, dirs, files in os.walk(self.pages_directory, topdown=True):
+            self.filenames = files
+        return self.filenames
 
+    def chunk_all_pages(self):
+        for filename in self.filenames:
+            self.chunk_page(self.pages_directory + filename)
 
+    def chunk_page(self, page):
+        with open(page, "r") as file:
+            html = file.read()
+
+        soup = BeautifulSoup(html, "html.parser")
+
+        title = soup.find("h2").text
+        if title == "Register with an access code":
+            return
+
+        # All important content is within div tags with class:card-block
+        blocks = soup.find_all("div", attrs={"class" : "card-block"})
+
+        
+
+chunker = BMJChunker()
+chunker.return_page_filenames()
+chunker.chunk_all_pages()
 
 
 # This function extracts meaningful data from HTML files and chunks them
