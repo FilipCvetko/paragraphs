@@ -8,12 +8,11 @@ class BMJChunker():
     def __init__(self):
         self.pages_directory = PAGES_DIRECTORY
         self.chunks_directory = CHUNKS_DIRECTORY
-        self.filenames = []
+        self.filenames = self.return_page_filenames()
 
     def return_page_filenames(self):
         for root, dirs, files in os.walk(self.pages_directory, topdown=True):
-            self.filenames = files
-        return self.filenames
+            return files
 
     def chunk_all_pages(self):
         for filename in self.filenames:
@@ -25,14 +24,25 @@ class BMJChunker():
 
         soup = BeautifulSoup(html, "html.parser")
 
-        title = soup.find("h2").text
+        try:
+            if soup.find("h2").text != "Summary":
+                title = soup.find("link", attrs={"rel" : "canonical"})["href"].rsplit("/")[-1]
+            else:
+                title = "summary"
+            disease = soup.find("h1").text
+        except AttributeError:
+            return
+        
         if title == "Register with an access code":
             return
+
+        print(disease, ": ", title)
 
         # All important content is within div tags with class:card-block
         blocks = soup.find_all("div", attrs={"class" : "card-block"})
 
-        
+        for block in blocks:
+            pass
 
 chunker = BMJChunker()
 chunker.return_page_filenames()
