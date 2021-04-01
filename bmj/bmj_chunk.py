@@ -42,7 +42,17 @@ class BMJChunker():
         blocks = soup.find_all("div", attrs={"class" : "card-block"})
 
         for block in blocks:
-            pass
+            if "disclaimer" in block.text:
+                continue
+            paragraphs = block.find_all("p")
+            text = ""
+            for p in paragraphs:
+                text += p.text
+            
+            if len(text.split()) == 0:
+                continue
+            print(len(text.split()))
+
 
 chunker = BMJChunker()
 chunker.return_page_filenames()
