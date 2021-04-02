@@ -3,7 +3,7 @@ from config import *
 import os
 import time
 import re
-from lxml import etree
+import datetime
 
 
 class BMJChunker():
@@ -25,15 +25,67 @@ class BMJChunker():
         folder_dir = self.chunks_directory + title
         if not os.path.isdir(folder_dir):
             os.mkdir(folder_dir)
-        with open(folder_dir + "/" + disease + ".txt", "w") as file:
+        with open(folder_dir + "/" + disease + str(hash(datetime.datetime.now()))[:10] + ".txt", "w") as file:
             file.write(text)
+
+    def preprocess_text(self, text):
+        text = re.sub(r"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", "", text)
+        text = re.sub('[^A-Za-z0-9 \.\!\?]+', '', text)
+        return text
+
+    def find_block_style(self, block):
+        # These numbers to correspond to styles declared in chunking_rules.txt
+        if block.find("table"):
+            return 4
+        elif block.find("div", attrs={"class" : "row rowCondition"}):
+            return 2
+        elif block.find("div", attrs={"class" : re.compile("panel-content")}):
+            return 3
+        else:
+            return 1
+
+    def chunk_block_style1(self, block, disease, title):
+        chunks = []
+        if not block.find("h3"):
+            # There is no reasonable separation
+            chunk = block.get_text(separator=" ")
+            chunks.append(chunk)
+        else:
+            for ind, h3 in enumerate(block.find_all("h3")):
+                if ind == 0:
+                    text = []
+                    for item in h3.find_previous_siblings():
+                        print(item)
+                        text.append(item.get_text(separator=" "))
+                    text.reverse()
+                    first_chunk = " ".join(text)
+                    if first_chunk != "":
+                        chunks.append(first_chunk)
+                    text = [h3.text]
+                    for nextt in h3.find_next_siblings():
+                        if nextt != "h3":
+                            text.append(nextt.get_text(separator=" "))
+                    chunk = " ".join(text)
+                    chunks.append(chunk)
+                else:
+                    text = [h3.text]
+                    for nextt in h3.find_next_siblings():
+                        if nextt != "h3":
+                            text.append(nextt.get_text(separator=" "))
+                        else:
+                            break
+                    chunk = " ".join(text)
+                    chunks.append(chunk)
+
+        for chunk in chunks:
+            if chunk != "":
+                self.save_chunk(chunk, disease, title)
+
 
     def chunk_page(self, page):
         with open(page, "r") as file:
             html = file.read()
-
         soup = BeautifulSoup(html, "html.parser")
-
         try:
             if soup.find("h2").text != "Summary":
                 title = soup.find("link", attrs={"rel" : "canonical"})["href"].rsplit("/")[-1]
@@ -42,39 +94,33 @@ class BMJChunker():
             disease = soup.find("h1").text
         except AttributeError:
             return
-        
         if title == "Register with an access code":
             return
-
         if "Subscription required" in disease:
             return
-
         for span in soup.find_all("span", {"class" : "reference"}):
+            span.decompose()
+        for span in soup.find_all("span", {"class" : "figureWrap"}):
             span.decompose()
 
         print(disease, ": ", title)
 
         # All important content is within div tags with class:card-block
-        blocks = soup.find_all("div", attrs={"class" : re.compile("card-block")})
+        blocks = soup.find_all("div", attrs={"class" : "card-block"})
 
         for block in blocks:
             if "disclaimer" in block.text:
                 continue
-            # paragraphs = block.find_all("p")
-            # text = ""
-            # for p in paragraphs:
-            #     text += p.text
-            text = block.get_text(separator=" ")
-
-            if len(text.split()) < 70:
-                continue
-
-            text = re.sub(r"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", "", text)
-            text = re.sub(r"Practical tip", "", text)
-            text = re.sub('[^A-Za-z0-9 \.\!\?]+', '', text)
-
-            # Write file to appropriate folder
-            self.save_chunk(text, disease, title)
+            #text = block.get_text(separator=" ")
+            style = self.find_block_style(block)
+            if style == 1:
+                self.chunk_block_style1(block, disease, title)
+            elif style == 2:
+                pass
+            elif style == 3:
+                pass
+            else:
+                pass
 
 chunker = BMJChunker()
 chunker.return_page_filenames()
