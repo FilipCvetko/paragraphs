@@ -2,6 +2,9 @@ from bs4 import BeautifulSoup
 from config import *
 import os
 import time
+import re
+from lxml import etree
+
 
 class BMJChunker():
 
@@ -17,6 +20,13 @@ class BMJChunker():
     def chunk_all_pages(self):
         for filename in self.filenames:
             self.chunk_page(self.pages_directory + filename)
+
+    def save_chunk(self, text, disease, title):
+        folder_dir = self.chunks_directory + title
+        if not os.path.isdir(folder_dir):
+            os.mkdir(folder_dir)
+        with open(folder_dir + "/" + disease + ".txt", "w") as file:
+            file.write(text)
 
     def chunk_page(self, page):
         with open(page, "r") as file:
@@ -36,23 +46,35 @@ class BMJChunker():
         if title == "Register with an access code":
             return
 
+        if "Subscription required" in disease:
+            return
+
+        for span in soup.find_all("span", {"class" : "reference"}):
+            span.decompose()
+
         print(disease, ": ", title)
 
         # All important content is within div tags with class:card-block
-        blocks = soup.find_all("div", attrs={"class" : "card-block"})
+        blocks = soup.find_all("div", attrs={"class" : re.compile("card-block")})
 
         for block in blocks:
             if "disclaimer" in block.text:
                 continue
-            paragraphs = block.find_all("p")
-            text = ""
-            for p in paragraphs:
-                text += p.text
-            
-            if len(text.split()) == 0:
-                continue
-            print(len(text.split()))
+            # paragraphs = block.find_all("p")
+            # text = ""
+            # for p in paragraphs:
+            #     text += p.text
+            text = block.get_text(separator=" ")
 
+            if len(text.split()) < 70:
+                continue
+
+            text = re.sub(r"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", "", text)
+            text = re.sub(r"Practical tip", "", text)
+            text = re.sub('[^A-Za-z0-9 \.\!\?]+', '', text)
+
+            # Write file to appropriate folder
+            self.save_chunk(text, disease, title)
 
 chunker = BMJChunker()
 chunker.return_page_filenames()

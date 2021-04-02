@@ -1,0 +1,23 @@
+CHUNKING RULES for BMJ Best Practise
+See https://bestpractice.bmj.com/topics/en-gb/3000117 for example (free to access).
+
+1.  Each menu page has one or more <div class="card-block">. These contain the useful information.
+    Note that some of the pages have additional information besides merely code-block i.e class="card-block poce-keypoints".
+    So I suggest using regex to find these tags -> re.compile("card-block")
+2.  Once inside the card-block, there is EXACTLY 1 of the following 4 styles:
+
+        1.  The easiest one is just one <section> tag with paragraphs and subheadings. This is most frequently used.
+            Chunks can be easily split on <h3> tags for example or bolded text -> up for discussion. (Click on Monitoring)
+        2.  There can also be toggled elements inside code-block. If there is only one one toggle level without subtoggles,
+            then information inside resides within two div tags. The first is class="row rowCondition", which contains the title the data-target attribute,
+            which corresponds to the other div tag with class="row rowDetails" which contains the text. The problem is that the context of the toggle appearing next to other toggles
+            may be very important. If you look at Differentials, each individual toggle represents a disease, which means if we only select one subtoggle, there is almost no way
+            the model will understand this as Differentials.
+        3.  Now we come to the hard ones. Pages which have strict hieararchical subtoggles. Treatment algorithm might be the best example. After inspecting
+            the structure of the data, there is no way we should leave any of the parent toggle titles out. For example information about first line-treatment
+            for hypovolemia and hyperkalemia is critical to the understanding of the whole paragraph inside and should absolutely not be left out! Tags are organized into sections.
+            Each section has an id="panel-group" or panel-content and they usually have --level1 or --level2 beside. So they neatly explain which level we are at.
+        4.  Tables! <table>, <tbody> and so on. A bit different but the same goes as for single indented toggles. Context may be important, but not necessarily.
+
+3.  Accounting for the 4 styles we come to the partially prepared information which should either be divided or not.
+    I propose splitting on either h3 tags or bolded text, as it may indicate something different.
