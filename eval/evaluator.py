@@ -37,7 +37,8 @@ We will be working with the data and preparing for fine tuning purposes.
 
 # ALL DATA PREPROCESSING IS HERE.
 
-data = pd.read_csv("./../data/title_text.csv")
+data = pd.read_csv("./../data/scraped_bmj.csv")
+data = data.sample(frac=1)
 
 # Defining some key variables that will be used later on in the training
 MAX_LEN = 512
@@ -137,38 +138,38 @@ model_three = model_three.to(device)
 def evaluate():
 
     for ind, row in tqdm(data.iterrows()):
-        if ind == 30:
+        if ind == 100:
             break
         row.reset_index(drop=True)
-        eval_set = CustomDataset(row["text"], tokenizer, MAX_LEN)
+        if isinstance(row["text"], str):
+            eval_set = CustomDataset(row["text"], tokenizer, MAX_LEN)
+            eval_loader = DataLoader(eval_set, **eval_params)
 
-        eval_loader = DataLoader(eval_set, **eval_params)
+            for new_data in eval_loader:
 
-        for new_data in eval_loader:
-
-            ids = new_data['ids'].to(device, dtype = torch.long)
-            mask = new_data['mask'].to(device, dtype = torch.long)
-            token_type_ids = new_data['token_type_ids'].to(device, dtype = torch.long)
+                ids = new_data['ids'].to(device, dtype = torch.long)
+                mask = new_data['mask'].to(device, dtype = torch.long)
+                token_type_ids = new_data['token_type_ids'].to(device, dtype = torch.long)
 
 
-            outputs_one = model_one(ids, mask, token_type_ids)
-            outputs_two = model_two(ids, mask, token_type_ids)
-            outputs_three = model_three(ids, mask, token_type_ids)
-            outputs_one = torch.sigmoid(outputs_one).cpu().detach().numpy().tolist()
-            outputs_two = torch.sigmoid(outputs_two).cpu().detach().numpy().tolist()
-            outputs_three = torch.sigmoid(outputs_three).cpu().detach().numpy().tolist()
+                outputs_one = model_one(ids, mask, token_type_ids)
+                outputs_two = model_two(ids, mask, token_type_ids)
+                outputs_three = model_three(ids, mask, token_type_ids)
+                outputs_one = torch.sigmoid(outputs_one).cpu().detach().numpy().tolist()
+                outputs_two = torch.sigmoid(outputs_two).cpu().detach().numpy().tolist()
+                outputs_three = torch.sigmoid(outputs_three).cpu().detach().numpy().tolist()
 
-            outputs_one = np.array(outputs_one) >= 0.5
-            outputs_two = np.array(outputs_two) >= 0.5
-            outputs_three = np.array(outputs_three) >= 0.5
+                outputs_one = np.array(outputs_one) >= 0.5
+                outputs_two = np.array(outputs_two) >= 0.5
+                outputs_three = np.array(outputs_three) >= 0.5
 
-            new_data_list.append({"title" : row["title"], "text" : row["text"], "1" : outputs_one, "2" : outputs_two, "3" : outputs_three})
-            break
+                new_data_list.append({"title" : row["disease"] + "|" + row["heading"] , "text" : row["text"], "1" : outputs_one, "2" : outputs_two, "3" : outputs_three})
+                break
 
-        # print("Text: ", row["text"])
-        # print(data.loc[ind, "predicted"])
+            # print("Text: ", row["text"])
+            # print(data.loc[ind, "predicted"])
 
 evaluate()
 
 to_export = pd.DataFrame(new_data_list)
-to_export.to_csv("./../data/predicted2.csv")
+to_export.to_csv("./../data/predicted_bmj.csv")
